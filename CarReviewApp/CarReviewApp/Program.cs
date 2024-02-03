@@ -1,11 +1,33 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using System;
+using CarReviewApp.Data;
+using CarReviewApp.Interfaces;
+using CarReviewApp.Repository;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<ICarRepository, CarRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//builder.Services.AddDbContext<DataContext>(options =>
+//{
+//    options.UseMySql(builder.Configuration.GetConnectionString(name: "DefaultConnection"));
+
+//});
+
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddDbContext<DataContext>(options => options.UseMySql(connectionString));
+
+
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<DataContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+
+
 
 var app = builder.Build();
 

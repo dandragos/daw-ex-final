@@ -12,4 +12,5 @@ namespace CarReviewApp.Models
 		public Category Category { get; set; }
 
 	}
+}
 
